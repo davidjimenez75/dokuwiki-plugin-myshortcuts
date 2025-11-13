@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyShortcuts Plugin Debug Test</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .test-section {
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .success { color: green; }
+        .error { color: red; }
+        #wiki__text {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            font-family: monospace;
+        }
+        #debug-output {
+            background: #000;
+            color: #0f0;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>MyShortcuts Plugin Debug Test</h1>
+
+    <div class="test-section">
+        <h2>Status Checks</h2>
+        <div id="status-checks"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Editor (simulates DokuWiki editor)</h2>
+        <p>This simulates the DokuWiki editor textarea:</p>
+        <textarea id="wiki__text">Type here and test Ctrl+I for snippets...</textarea>
+    </div>
+
+    <div class="test-section">
+        <h2>Debug Console</h2>
+        <div id="debug-output"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Instructions</h2>
+        <ol>
+            <li><strong>Check Status</strong>: Look at the status checks above</li>
+            <li><strong>Test Ctrl+I</strong>: Click in the textarea and press Ctrl+I</li>
+            <li><strong>Expected Result</strong>: A snippet dialog should appear</li>
+            <li><strong>If it works here</strong>: The problem is with DokuWiki integration</li>
+            <li><strong>If it doesn't work</strong>: There's a JavaScript error</li>
+        </ol>
+    </div>
+
+    <!-- Simulate DokuWiki config -->
+    <script>
+        // Simulate MYSHORTCUTS_CONFIG
+        var MYSHORTCUTS_CONFIG = {
+            shortcutEdit: 'ctrl+e',
+            shortcutSave: 'ctrl+s',
+            shortcutSnippet: 'ctrl+i',
+            snippets: [
+                { label: 'Test Snippet 1', text: 'This is test snippet 1' },
+                { label: 'Test Snippet 2', text: 'This is test snippet 2' },
+                { label: 'Meeting Notes', text: '## Meeting Notes\n\nDate: \nAttendees: ' }
+            ]
+        };
+
+        // Debug logging
+        function debugLog(message, type) {
+            var output = document.getElementById('debug-output');
+            var time = new Date().toLocaleTimeString();
+            var color = type === 'error' ? '#f00' : type === 'success' ? '#0f0' : '#0ff';
+            output.innerHTML += '<span style="color:' + color + '">[' + time + '] ' + message + '</span><br>';
+            output.scrollTop = output.scrollHeight;
+        }
+
+        // Override console.log
+        var originalLog = console.log;
+        console.log = function() {
+            originalLog.apply(console, arguments);
+            debugLog(Array.from(arguments).join(' '), 'info');
+        };
+
+        // Override console.error
+        var originalError = console.error;
+        console.error = function() {
+            originalError.apply(console, arguments);
+            debugLog('ERROR: ' + Array.from(arguments).join(' '), 'error');
+        };
+
+        window.addEventListener('error', function(e) {
+            debugLog('ERROR: ' + e.message + ' at ' + e.filename + ':' + e.lineno, 'error');
+        });
+
+        debugLog('Debug test page loaded', 'success');
+    </script>
+
+    <!-- Load the plugin script -->
+    <script src="script.js"></script>
+
+    <!-- Status checks -->
+    <script>
+        function checkStatus() {
+            var statusDiv = document.getElementById('status-checks');
+            var checks = [];
+
+            // Check if config loaded
+            if (typeof MYSHORTCUTS_CONFIG !== 'undefined') {
+                checks.push('<p class="success">✓ MYSHORTCUTS_CONFIG is defined</p>');
+                debugLog('Config loaded: ' + JSON.stringify(MYSHORTCUTS_CONFIG), 'success');
+            } else {
+                checks.push('<p class="error">✗ MYSHORTCUTS_CONFIG is NOT defined</p>');
+                debugLog('Config NOT loaded', 'error');
+            }
+
+            // Check if plugin object exists
+            if (typeof MyShortcutsPlugin !== 'undefined') {
+                checks.push('<p class="success">✓ MyShortcutsPlugin object exists</p>');
+                debugLog('MyShortcutsPlugin object found', 'success');
+            } else {
+                checks.push('<p class="error">✗ MyShortcutsPlugin object NOT found</p>');
+                debugLog('MyShortcutsPlugin object NOT found', 'error');
+            }
+
+            // Check if editor exists
+            var editor = document.getElementById('wiki__text');
+            if (editor) {
+                checks.push('<p class="success">✓ Editor textarea found (#wiki__text)</p>');
+                debugLog('Editor textarea found', 'success');
+            } else {
+                checks.push('<p class="error">✗ Editor textarea NOT found</p>');
+                debugLog('Editor textarea NOT found', 'error');
+            }
+
+            statusDiv.innerHTML = checks.join('');
+        }
+
+        // Run checks after a short delay
+        setTimeout(checkStatus, 100);
+
+        debugLog('Status checks scheduled', 'info');
+    </script>
+</body>
+</html>

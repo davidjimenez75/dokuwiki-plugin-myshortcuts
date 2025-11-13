@@ -1,0 +1,7 @@
+base   myshortcuts
+author David Jiménez
+email  davidjimenez75@gmail.com
+date   2025-11-13
+name   myshortcuts plugin
+desc   Create your own personal Dokuwiki shortcuts
+url    https://www.dokuwiki.org/plugin:myshortcuts

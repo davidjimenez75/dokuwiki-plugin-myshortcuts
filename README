@@ -1,0 +1,131 @@
+myshortcuts plugin for DokuWiki
+=================================
+
+Create your own personal DokuWiki keyboard shortcuts for common actions.
+
+FEATURES
+--------
+* Customizable keyboard shortcuts for editing and saving pages
+* Quick snippet insertion with keyboard shortcuts
+* Visual snippet selection dialog
+* Easy configuration through DokuWiki admin interface
+* Supports multiple modifier keys (Ctrl, Alt, Shift, Meta/Cmd)
+
+DEFAULT SHORTCUTS
+-----------------
+* Ctrl+E - Edit current page
+* Ctrl+S - Save current page (only in edit mode)
+* Ctrl+I - Insert snippet (only in edit mode)
+
+INSTALLATION
+------------
+If you install this plugin manually, make sure it is installed in
+lib/plugins/myshortcuts/ - if the folder is called different it
+will not work!
+
+Please refer to http://www.dokuwiki.org/extensions for additional info
+on how to install extensions in DokuWiki.
+
+CONFIGURATION
+-------------
+After installation, go to:
+Admin → Configuration Settings → myshortcuts plugin
+
+Available settings:
+
+1. shortcut_edit: Keyboard shortcut to edit pages (default: ctrl+e)
+2. shortcut_save: Keyboard shortcut to save pages (default: ctrl+s)
+3. shortcut_snippet: Keyboard shortcut to open snippet dialog (default: ctrl+i)
+4. snippets: List of text snippets (one per line)
+
+SNIPPET FORMAT
+--------------
+Snippets should be entered one per line in the format:
+  Label: Text to insert
+
+Examples:
+  Meeting Notes: ## Meeting Notes\n\n**Date:** \n**Attendees:** \n**Topics:**
+  TODO: ☐ TODO:
+  Code Block: ```\nYour code here\n```
+
+KEYBOARD SHORTCUT FORMAT
+------------------------
+Shortcuts can use the following modifiers:
+* ctrl or control
+* alt
+* shift
+* meta or cmd (Command key on Mac)
+
+Examples:
+* ctrl+e
+* alt+s
+* ctrl+shift+i
+* meta+e
+
+USAGE
+-----
+1. View Mode:
+   - Press your configured edit shortcut (default: Ctrl+E) to enter edit mode
+
+2. Edit Mode:
+   - Press your configured save shortcut (default: Ctrl+S) to save changes
+   - Press your configured snippet shortcut (default: Ctrl+I) to open snippet dialog
+   - Select a snippet from the dialog or press ESC to cancel
+
+3. Snippet Dialog:
+   - Click on a snippet to insert it at cursor position
+   - Use keyboard navigation (Tab/Shift+Tab) to move between snippets
+   - Press Enter to insert selected snippet
+   - Press ESC to close dialog
+
+BROWSER COMPATIBILITY
+---------------------
+Note: Some keyboard shortcuts may conflict with browser defaults:
+* Ctrl+S is "Save Page" in most browsers - the plugin will override this
+* Ctrl+E may open search in some browsers
+* If shortcuts don't work, try using Alt or Meta modifiers instead
+
+TROUBLESHOOTING
+---------------
+1. Shortcuts not working?
+   - Check browser console for errors (F12)
+   - Verify shortcuts don't conflict with browser shortcuts
+   - Try different modifier keys (Alt, Meta instead of Ctrl)
+
+2. Save not working?
+   - Make sure you're in edit mode
+   - Check if the edit form is visible
+
+3. Snippets not inserting?
+   - Make sure you're in edit mode
+   - Check snippet configuration format
+
+DEVELOPMENT
+-----------
+Key files:
+* action.php - Passes configuration to JavaScript
+* script.js - Handles keyboard events and actions
+* style.css - Styles for snippet dialog
+* conf/default.php - Default configuration values
+* conf/metadata.php - Configuration field types
+* lang/en/settings.php - English configuration descriptions
+
+SUPPORT
+-------
+If you need help, please report issues at:
+https://www.dokuwiki.org/plugin:myshortcuts
+
+LICENSE
+-------
+Copyright (C) David Jiménez <davidjimenez75@gmail.com>
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; version 2 of the License
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+See the LICENSE file for details
